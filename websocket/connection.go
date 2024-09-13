@@ -1,19 +1,20 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"net/http"
 	"github.com/gorilla/websocket"
+	"net/http"
 )
 
-type connection struct{
-	ws *websocket.Conn
-	sc chan []byte
+type connection struct {
+	ws   *websocket.Conn
+	sc   chan []byte
 	data *Data
 }
 
-var wu = &websocket.Upgrade{
-	ReadBufferSize: 512,
+var wu = &websocket.Upgrader{
+	ReadBufferSize:  512,
 	WriteBufferSize: 512,
 	CheckOrigin: func(r *http.Request) bool {
 		return true
@@ -27,8 +28,8 @@ func myws(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	c := &connection{
-		sc: make(chan []byte, 256),
-		ws: ws,
+		sc:   make(chan []byte, 256),
+		ws:   ws,
 		data: &Data{},
 	}
 	h.r <- c
@@ -99,7 +100,7 @@ func del(slice []string, user string) []string {
 		if slice[i] == user && i == count {
 			return slice[:count]
 		} else if slice[i] == user {
-			n_slice = append(slice[:i], slice[i+1]...)
+			n_slice = append(slice[:i], slice[i+1:]...)
 			break
 		}
 	}
