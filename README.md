@@ -48,7 +48,7 @@ M与P的数量没有绝对关系，一个M阻塞，P就会去创建或者切换�
 ### 复用线程：避免频繁地创建、销毁线程，而是对线程的复用
 1. work stealing机制
 当本线程无可运行的G时，尝试从其他线程绑定的P偷取G，而不是销毁线程
-2. hand off机智
+2. hand off机制
 当本线程因为G进行系统调用阻塞时，线程释放绑定的P，把P转移给其他空闲的线程执行
 **利用并行：** GOMAXPROCS设置P的数量，最多有GOMAXPROCS个线程分布在多个CPU上同时运行。GOMAXPROCS也限制了并发的速度，比如GOMAXPROCS = 核数/2，则最多利用了一版的CPU核进行并行
 **抢占：** 在coroutine中要等待一个协程主动让出CPU才执行下一个协程，在Go中，一个goroutine最多占用CPU10ms,防止其他goroutine被饿死，这就是goroutine不同于coroutine的一个地方
