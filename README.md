@@ -33,7 +33,7 @@ the note for learning golang
 
 ### P和M的个数问题
 1. P的数量
-   * 由启动时环境变量$GOMAXPROCS或者是由runtime的方法GOMAXPROCS()决定。意味着在程序执行的任意时刻都只有$GOMAXPROCS个goroutine在同时执行
+   * 由启动时环境变量\$GOMAXPROCS或者是由runtime的方法GOMAXPROCS()决定。意味着在程序执行的任意时刻都只有$GOMAXPROCS个goroutine在同时执行
 2. M的数量
    * go语言本身的限制：go程序启动时，会设置M的最大数量，默认10000，但是内核很难支持这么多线程数，所以该限制可以忽略
    * runtime/debug中的SetMaxThreads函数，设置M的最大数量
