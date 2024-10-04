@@ -32,7 +32,7 @@ func main() {
 		// 异步从每个分区消费信息
 		go func(sarama.PartitionConsumer) {
 			for msg := range pc.Messages() {
-				fmt.Printf("Partition:%d Offset:%d Key:%s Value:%s \n", msg.Partition, msg.Offset, string(msg.Key), string(msg.Value))
+				fmt.Printf("Partition:%d Offset:%d Key:%v Value:%v \n", msg.Partition, msg.Offset, string(msg.Key), string(msg.Value))
 			}
 			wg.Done()
 		}(pc)
