@@ -17,7 +17,7 @@ func main() {
 	msg.Topic = "test_topic"
 	msg.Value = sarama.StringEncoder("Hello World")
 	// 连接kafka
-	client, err := sarama.NewSyncProducer([]string{"192.168.72.129:9092"}, config)
+	client, err := sarama.NewSyncProducer([]string{"192.168.72.130:9092"}, config)
 	if err != nil {
 		fmt.Println("Error creating client:", err)
 		return

@@ -9,7 +9,7 @@ import (
 var wg sync.WaitGroup
 
 func main() {
-	consumer, err := sarama.NewConsumer([]string{"192.168.72.129:9092"}, nil)
+	consumer, err := sarama.NewConsumer([]string{"192.168.72.130:9092"}, nil)
 	if err != nil {
 		fmt.Println("Failed to start consumer:", err)
 		return
