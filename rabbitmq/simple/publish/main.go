@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	rabbitmq := RabbitMQ.NewRabbitMQSimple("" + "kevin")
+	rabbitmq := RabbitMQ.NewRabbitMQSimple("kevin")
 	rabbitmq.PublishSimple("Hello World")
 	fmt.Println("发送成功")
 }
