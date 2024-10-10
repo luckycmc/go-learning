@@ -12,9 +12,11 @@ import (
 var wg sync.WaitGroup
 
 type User struct {
-	Id    uint
-	Name  string
-	Email string
+	Id        int       `gorm:"primary_key;auto_increment"`
+	Name      string    `gorm:"type:varchar(50);not null"`
+	Email     string    `gorm:"type:varchar(50);not null"`
+	CreatedAt time.Time `gorm:"type:datetime;not null"`
+	UpdatedAt time.Time `gorm:"type:datetime;not null"`
 }
 
 func main() {
@@ -35,11 +37,13 @@ func main() {
 	wg.Add(1)
 	// 创建记录
 	go func() {
-		for i := 1; i <= 100; i++ {
+		for i := 1; i <= 100000; i++ {
 			user := User{
-				uint(i),
+				i,
 				"test_user" + strconv.Itoa(i),
 				"test_user" + strconv.Itoa(i) + "@email.com",
+				time.Now(),
+				time.Now(),
 			}
 			db.Create(&user)
 		}
@@ -58,6 +62,12 @@ func main() {
 	var uu User
 	db.Find(&uu, "email = ?", "test_user2@email.com")
 	fmt.Printf("user:%#v\n", uu)
+
+	// 查询所有
+	var queryStart = time.Now()
+	db.Find(&uu)
+	var queryEnd = time.Now()
+	fmt.Println("query_time: ", queryEnd.Sub(queryStart))
 
 	// 更新
 	db.Model(&user).Update("email", "test11@email.com")
