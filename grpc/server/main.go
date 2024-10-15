@@ -32,7 +32,7 @@ func (s *UserInfoService) GetUserInfo(ctx context.Context, req *pb.UserRequest) 
 
 func main() {
 	// 地址
-	addr := "127.0.0.1:8080"
+	addr := "127.0.0.1:8000"
 	// 监听
 	listener, err := net.Listen("tcp", addr)
 	if err != nil {
