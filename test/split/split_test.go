@@ -49,7 +49,7 @@ func TestSplit2(t *testing.T) {
 		"leading sep": {
 			input: "我是好人",
 			sep:   "好",
-			want:  []string{"我是", " 人"},
+			want:  []string{"我是", "人"},
 		},
 	}
 	// 遍历切片，逐一执行
@@ -58,5 +58,44 @@ func TestSplit2(t *testing.T) {
 		if !reflect.DeepEqual(got, tc.want) {
 			t.Errorf("name:%s expected:%#v,got:%#v", name, tc.want, got)
 		}
+	}
+}
+
+func TestSplit3(t *testing.T) {
+	type test struct {
+		input string
+		sep   string
+		want  []string
+	}
+	tests := map[string]test{
+		"simple": {
+			input: "a:b:b",
+			sep:   ":",
+			want:  []string{"a", "b", "b"},
+		},
+		"wrong sep": {
+			input: "a:b:c",
+			sep:   ",",
+			want:  []string{"a:b:c"},
+		},
+		"more sep": {
+			input: "aabc",
+			sep:   "ab",
+			want:  []string{"a", "c"},
+		},
+		"leading sep": {
+			input: "我是好人",
+			sep:   "好",
+			want:  []string{"我是", "人"},
+		},
+	}
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
+			got := Split(tc.input, tc.sep)
+			if !reflect.DeepEqual(got, tc.want) {
+				t.Errorf("name:%s expected:%#v,got:%#v", name, tc.want, got)
+			}
+		})
+
 	}
 }
