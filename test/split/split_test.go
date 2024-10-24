@@ -99,3 +99,9 @@ func TestSplit3(t *testing.T) {
 
 	}
 }
+
+func BenchmarkSplit(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Split("今天天气不错", "天")
+	}
+}

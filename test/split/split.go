@@ -5,6 +5,7 @@ import (
 )
 
 func Split(s, sep string) (result []string) {
+	result = make([]string, 0, strings.Count(s, sep)+1)
 	i := strings.Index(s, sep)
 
 	for i > -1 {
