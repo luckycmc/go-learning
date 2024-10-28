@@ -64,6 +64,7 @@ require (
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/robfig/cron v1.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
+	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e // indirect
 	github.com/tuotoo/qrcode v0.0.0-20220425170535-52ccc2bebf5d // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
