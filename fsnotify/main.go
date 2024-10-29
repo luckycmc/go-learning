@@ -13,7 +13,7 @@ func main() {
 	w := Watch{
 		watch: watch,
 	}
-	w.watchDir("./fsnotify")
+	w.watchDir("./web")
 	select {}
 }
 
