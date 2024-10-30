@@ -30,7 +30,10 @@ func (c *UserController) Post() {
 
 }
 
+// Get ...
+// @router /user [get]
 func (c *UserController) Get() {
+
 	c.TplName = "user/index.tpl"
 }
 
@@ -40,8 +43,12 @@ func (c *UserController) Get() {
 // @Param	id		path 	string	true		"The key for staticblock"
 // @Success 200 {object} models.User
 // @Failure 403 :id is empty
-// @router /:id [get]
+// @router /user/:id [get]
 func (c *UserController) GetOne() {
+	id := c.Ctx.Input.Param(":id")
+	c.Data["id"] = id
+	c.Data["username"] = "kevin"
+	c.TplName = "user/show.tpl"
 
 }
 
