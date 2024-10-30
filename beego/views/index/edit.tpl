@@ -1,0 +1,1 @@
+C:\Go\src\beego/views/index/edit.tpl
