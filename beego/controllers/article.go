@@ -24,9 +24,18 @@ func (c *ArticleController) URLMapping() {
 // @Param	body		body 	models.Article	true		"body for Article content"
 // @Success 201 {object} models.Article
 // @Failure 403 body is empty
-// @router / [post]
+// @router /article [post]
 func (c *ArticleController) Post() {
+	title := c.GetString("title")
+	content := c.GetString("content")
+	c.Ctx.Output.Body([]byte(title))
+	c.Ctx.Output.Body([]byte(content))
+}
 
+// Get ...
+// @router /article [get]
+func (c *ArticleController) Get() {
+	c.TplName = "article/create.tpl"
 }
 
 // GetOne ...
@@ -53,7 +62,7 @@ func (c *ArticleController) GetOne() {
 // @Failure 403
 // @router / [get]
 func (c *ArticleController) GetAll() {
-	c.TplName = "article/index.tpl"
+	c.TplName = "article/show.tpl"
 
 }
 

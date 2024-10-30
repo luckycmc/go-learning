@@ -25,6 +25,7 @@ func init() {
 		beego.NSRouter("/test", &controllers.ArticleController{}, "get:GetOne"),
 		beego.NSNamespace("/article",
 			beego.NSRouter("/all", &controllers.ArticleController{}, "get:GetAll"),
+			beego.NSRouter("/", &controllers.ArticleController{}, "get:Get;post:Post"),
 		))
 	beego.AddNamespace(ns)
 }
