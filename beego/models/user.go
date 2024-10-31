@@ -11,18 +11,26 @@ import (
 )
 
 type User struct {
-	Id   int64
-	Name string
+	Id   int64  `orm:"auto"`
+	Name string `orm:"size(128)"`
 }
 
 func init() {
-	orm.RegisterDataBase("beego", "mysql", "root:root@tcp(192.168.72.130:3306)/beego?charset=utf8")
+	err := orm.RegisterDriver("mysql", orm.DRMySQL)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	err = orm.RegisterDataBase("default", "mysql", "root:root@tcp(192.168.72.130:3306)/beego?charset=utf8")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	orm.RegisterModel(new(User))
-	orm.RunSyncdb("beego", false, true)
 }
 
 func main() {
-	orm.Debug = true
+	orm.RunSyncdb("default", false, true)
 }
 
 // AddUser insert a new User into database and returns
