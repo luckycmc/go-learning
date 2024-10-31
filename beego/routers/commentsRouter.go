@@ -61,6 +61,60 @@ func init() {
 			Filters:          nil,
 			Params:           nil})
 
+	beego.GlobalControllerRouter["beego/controllers:ArticleController"] = append(beego.GlobalControllerRouter["beego/controllers:ArticleController"],
+		beego.ControllerComments{
+			Method:           "Create",
+			Router:           `/article/create`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["beego/controllers:ErrorController"] = append(beego.GlobalControllerRouter["beego/controllers:ErrorController"],
+		beego.ControllerComments{
+			Method:           "Post",
+			Router:           `/`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["beego/controllers:ErrorController"] = append(beego.GlobalControllerRouter["beego/controllers:ErrorController"],
+		beego.ControllerComments{
+			Method:           "GetAll",
+			Router:           `/`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["beego/controllers:ErrorController"] = append(beego.GlobalControllerRouter["beego/controllers:ErrorController"],
+		beego.ControllerComments{
+			Method:           "GetOne",
+			Router:           `/:id`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["beego/controllers:ErrorController"] = append(beego.GlobalControllerRouter["beego/controllers:ErrorController"],
+		beego.ControllerComments{
+			Method:           "Put",
+			Router:           `/:id`,
+			AllowHTTPMethods: []string{"put"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["beego/controllers:ErrorController"] = append(beego.GlobalControllerRouter["beego/controllers:ErrorController"],
+		beego.ControllerComments{
+			Method:           "Delete",
+			Router:           `/:id`,
+			AllowHTTPMethods: []string{"delete"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
 	beego.GlobalControllerRouter["beego/controllers:IndexController"] = append(beego.GlobalControllerRouter["beego/controllers:IndexController"],
 		beego.ControllerComments{
 			Method:           "Post",

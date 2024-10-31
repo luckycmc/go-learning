@@ -16,6 +16,13 @@ func (c *ArticleController) URLMapping() {
 	c.Mapping("GetAll", c.GetAll)
 	c.Mapping("Put", c.Put)
 	c.Mapping("Delete", c.Delete)
+	c.Mapping("Get", c.Create)
+}
+
+// Create ...
+// @router /article/create
+func (c *ArticleController) Create() {
+	c.TplName = "article/create.tpl"
 }
 
 // Post ...
