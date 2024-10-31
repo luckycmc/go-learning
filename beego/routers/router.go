@@ -20,6 +20,7 @@ func init() {
 	// 正则
 	beego.Router("/index/:name:string", &controllers.IndexController{}, "get:GetOne")
 	beego.Router("/index", &controllers.IndexController{}, "get:Get")
+	beego.Router("/redirect", &controllers.IndexController{}, "get:Index")
 
 	// namespace
 	ns := beego.NewNamespace("/v1",
