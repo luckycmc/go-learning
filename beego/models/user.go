@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
+	beego "github.com/beego/beego/v2/server/web"
 	"reflect"
 	"strings"
 
@@ -21,7 +22,13 @@ func init() {
 		fmt.Println(err)
 		return
 	}
-	err = orm.RegisterDataBase("default", "mysql", "root:root@tcp(192.168.72.130:3306)/beego?charset=utf8")
+	mysqluser, _ := beego.AppConfig.String("mysqluser")
+	mysqlpass, _ := beego.AppConfig.String("mysqlpass")
+	mysqlhost, _ := beego.AppConfig.String("mysqlhost")
+	mysqlport, _ := beego.AppConfig.String("mysqlport")
+	mysqldb, _ := beego.AppConfig.String("mysqldb")
+	dbConnect := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8", mysqluser, mysqlpass, mysqlhost, mysqlport, mysqldb)
+	err = orm.RegisterDataBase("default", "mysql", dbConnect)
 	if err != nil {
 		fmt.Println(err)
 		return
