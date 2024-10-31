@@ -2,9 +2,12 @@ package controllers
 
 import (
 	"beego/models"
+	"github.com/beego/beego/v2/core/validation"
 	beego "github.com/beego/beego/v2/server/web"
 	"html/template"
+	"log"
 	"strconv"
+	"strings"
 )
 
 // UserController operations for User
@@ -14,7 +17,13 @@ type UserController struct {
 
 type user struct {
 	Id   int64  `form:"-"`
-	Name string `form:"name"`
+	Name string `form:"name" valid:"Required;Match(/^Bee.*/)"`
+}
+
+func (u *user) Valid(v *validation.Validation) {
+	if strings.Index(u.Name, "admin") != -1 {
+		v.SetError("name", "名称里不能含有admin")
+	}
 }
 
 // URLMapping ...
@@ -38,15 +47,40 @@ func (c *UserController) Create() {
 // AddUser ...
 // @router /user/add_user [post]
 func (c *UserController) AddUser() {
-	u := user{}
+	var u user
 	if err := c.ParseForm(&u); err != nil {
 		return
 	}
-	// name := c.GetString("name")
-	user := models.User{
+
+	valid := validation.Validation{}
+	ok, err := valid.Valid(&u)
+
+	if !ok {
+		for _, err := range valid.Errors {
+			log.Println(err.Key, err.Message)
+		}
+	}
+
+	newUser := models.User{
 		Name: u.Name,
 	}
-	id, err := models.AddUser(&user)
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	/*valid.Required(u.Name, "name")
+	valid.MaxSize(u.Name, 15, "name")
+	valid.MinSize(u.Name, 3, "name")
+	if valid.HasErrors() {
+		for _, err := range valid.Errors {
+			log.Println(err.Key, err.Message)
+		}
+	}*/
+
+	// name := c.GetString("name")
+
+	id, err := models.AddUser(&newUser)
 	if err != nil {
 		return
 	}

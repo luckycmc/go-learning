@@ -8,8 +8,10 @@
 <body>
 <form action="/user/add_user" method="post">
     {{.xsrfdata}}
-    name:
-    <input type="text" name="name">
+    <label>
+        name:
+        <input type="text" name="name">
+    </label>
     <input type="submit" value="submit">
 </form>
 </body>
