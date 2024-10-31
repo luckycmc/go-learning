@@ -29,6 +29,18 @@ func (c *IndexController) Post() {
 
 }
 
+func (c *IndexController) Get() {
+	v := c.GetSession("name")
+	if v == nil {
+		c.SetSession("name", "kevin")
+		c.Data["name"] = "kevin"
+	} else {
+		c.SetSession("name", "kevin1")
+		c.Data["name"] = "kevin1"
+	}
+	c.TplName = "index/index.tpl"
+}
+
 // GetOne ...
 // @Title GetOne
 // @Description get Index by id
