@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/beego/beego/v2/core/logs"
 	beego "github.com/beego/beego/v2/server/web"
 )
 
@@ -30,6 +31,8 @@ func (c *IndexController) Post() {
 }
 
 func (c *IndexController) Get() {
+	log := logs.GetLogger()
+	log.Println("aaa")
 	v := c.GetSession("name")
 	if v == nil {
 		c.SetSession("name", "kevin")
@@ -38,6 +41,7 @@ func (c *IndexController) Get() {
 		c.SetSession("name", "kevin1")
 		c.Data["name"] = "kevin1"
 	}
+	logs.SetLogger("aaaa")
 	c.TplName = "index/index.tpl"
 }
 
