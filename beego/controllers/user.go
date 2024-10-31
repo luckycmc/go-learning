@@ -38,9 +38,13 @@ func (c *UserController) Create() {
 // AddUser ...
 // @router /user/add_user [post]
 func (c *UserController) AddUser() {
-	name := c.GetString("name")
+	u := user{}
+	if err := c.ParseForm(&u); err != nil {
+		return
+	}
+	// name := c.GetString("name")
 	user := models.User{
-		Name: name,
+		Name: u.Name,
 	}
 	id, err := models.AddUser(&user)
 	if err != nil {
