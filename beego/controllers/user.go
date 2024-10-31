@@ -1,12 +1,20 @@
 package controllers
 
 import (
+	"beego/models"
 	beego "github.com/beego/beego/v2/server/web"
+	"html/template"
+	"strconv"
 )
 
 // UserController operations for User
 type UserController struct {
 	beego.Controller
+}
+
+type user struct {
+	Id   int64  `form:"-"`
+	Name string `form:"name"`
 }
 
 // URLMapping ...
@@ -17,6 +25,28 @@ func (c *UserController) URLMapping() {
 	c.Mapping("Get", c.Get)
 	c.Mapping("Put", c.Put)
 	c.Mapping("Delete", c.Delete)
+	c.Mapping("Create", c.Create)
+}
+
+// Create ...
+// @router /user/create [get]
+func (c *UserController) Create() {
+	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.TplName = "user/create.tpl"
+}
+
+// AddUser ...
+// @router /user/add_user [post]
+func (c *UserController) AddUser() {
+	name := c.GetString("name")
+	user := models.User{
+		Name: name,
+	}
+	id, err := models.AddUser(&user)
+	if err != nil {
+		return
+	}
+	c.Ctx.WriteString("success insert: " + strconv.FormatInt(id, 10))
 }
 
 // Post ...
@@ -25,7 +55,7 @@ func (c *UserController) URLMapping() {
 // @Param	body		body 	models.User	true		"body for User content"
 // @Success 201 {object} models.User
 // @Failure 403 body is empty
-// @router / [post]
+// @router /user [post]
 func (c *UserController) Post() {
 
 }
@@ -43,13 +73,10 @@ func (c *UserController) Get() {
 // @Param	id		path 	string	true		"The key for staticblock"
 // @Success 200 {object} models.User
 // @Failure 403 :id is empty
-// @router /user/:id [get]
+// @router /user/:id:int [get]
 func (c *UserController) GetOne() {
 	id := c.Ctx.Input.Param(":id")
 	c.Data["id"] = id
-	c.Data["username"] = "kevin"
-	c.TplName = "user/show.tpl"
-
 }
 
 // GetAll ...
@@ -63,7 +90,7 @@ func (c *UserController) GetOne() {
 // @Param	offset	query	string	false	"Start position of result set. Must be an integer"
 // @Success 200 {object} models.User
 // @Failure 403
-// @router / [get]
+// @router /user [get]
 func (c *UserController) GetAll() {
 
 }
@@ -75,7 +102,7 @@ func (c *UserController) GetAll() {
 // @Param	body		body 	models.User	true		"body for User content"
 // @Success 200 {object} models.User
 // @Failure 403 :id is not int
-// @router /:id [put]
+// @router /user/:id [put]
 func (c *UserController) Put() {
 
 }
@@ -86,7 +113,7 @@ func (c *UserController) Put() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /:id [delete]
+// @router /user/:id [delete]
 func (c *UserController) Delete() {
 
 }
