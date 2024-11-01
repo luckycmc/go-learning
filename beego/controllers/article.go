@@ -1,7 +1,10 @@
 package controllers
 
 import (
+	"beego/models"
+	"github.com/beego/beego/v2/core/logs"
 	beego "github.com/beego/beego/v2/server/web"
+	"html/template"
 )
 
 // ArticleController operations for Article
@@ -22,6 +25,7 @@ func (c *ArticleController) URLMapping() {
 // Create ...
 // @router /article/create
 func (c *ArticleController) Create() {
+	c.Data["xsrf"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "article/create.tpl"
 }
 
@@ -37,12 +41,24 @@ func (c *ArticleController) Post() {
 	content := c.GetString("content")
 	c.Ctx.Output.Body([]byte(title))
 	c.Ctx.Output.Body([]byte(content))
+	article := models.Article{
+		Title:   title,
+		Content: content,
+	}
+	id, err := models.AddArticle(&article)
+	if err != nil {
+		logs.Error(err)
+	}
+	c.Data["id"] = id
 }
 
 // Get ...
 // @router /article [get]
 func (c *ArticleController) Get() {
-	c.TplName = "article/create.tpl"
+	log := logs.GetLogger()
+	id := c.Ctx.Input.Param("id")
+	log.Println("id: ", id)
+	c.TplName = "article/show.tpl"
 }
 
 // GetOne ...
@@ -51,8 +67,20 @@ func (c *ArticleController) Get() {
 // @Param	id		path 	string	true		"The key for staticblock"
 // @Success 200 {object} models.Article
 // @Failure 403 :id is empty
-// @router /:id [get]
+// @router /article/:id [get]
 func (c *ArticleController) GetOne() {
+	log := logs.GetLogger()
+	id, err := c.GetInt(":id")
+	if err != nil {
+		logs.Error(err)
+	}
+	log.Println("id: ", id)
+	// select
+	article, err := models.GetArticleById(int64(id))
+	if err != nil {
+		logs.Error(err)
+	}
+	c.Data["article"] = &article
 	c.TplName = "article/show.tpl"
 }
 

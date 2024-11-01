@@ -9,6 +9,7 @@
 </head>
 <body>
 <form action="/v1/article" method="post">
+    {{.xsrf}}
     <label>Title
         <input type="text" name="title">
     </label>

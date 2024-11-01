@@ -5,17 +5,22 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/beego/beego/v2/client/orm"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type Article struct {
-	Id      int64  `orm:"auto"`
-	Title   string `orm:"size(128)"`
-	Content string `orm:"size(128)"`
-	// CreatedAt timestamp.Timestamp `orm:"type(timestamp)"`
-	// UpdatedAt timestamp.Timestamp `orm:"type(timestamp)"`
+	Id        int64     `orm:"auto"`
+	Title     string    `orm:"size(128)"`
+	Content   string    `orm:"size(128)"`
+	CreatedAt time.Time `orm:"auto_now_add;type(timestamp)"`
+	UpdatedAt time.Time `orm:"auto_now_add;type(timestamp)"`
+}
+
+func (a *Article) TableName() string {
+	return "articles"
 }
 
 func init() {

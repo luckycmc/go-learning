@@ -34,7 +34,7 @@ func (c *UserController) URLMapping() {
 	c.Mapping("Get", c.Get)
 	c.Mapping("Put", c.Put)
 	c.Mapping("Delete", c.Delete)
-	c.Mapping("Create", c.Create)
+	c.Mapping("Get", c.Create)
 }
 
 // Create ...
