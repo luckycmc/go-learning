@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
+	"log"
 	"reflect"
 	"strings"
 	"time"
@@ -107,9 +108,11 @@ func GetAllArticle(query map[string]string, fields []string, sortby []string, or
 		} else {
 			// trim unused fields
 			for _, v := range l {
+				log.Println(v)
 				m := make(map[string]interface{})
 				val := reflect.ValueOf(v)
 				for _, fname := range fields {
+					log.Println("field: ", fname)
 					m[fname] = val.FieldByName(fname).Interface()
 				}
 				ml = append(ml, m)

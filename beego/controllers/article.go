@@ -116,8 +116,23 @@ func (c *ArticleController) GetOne() {
 // @Failure 403
 // @router / [get]
 func (c *ArticleController) GetAll() {
-	c.TplName = "article/show.tpl"
-
+	log := logs.GetLogger()
+	query := make(map[string]string)
+	var fields []string
+	var sort []string
+	var order []string
+	var limit int64 = 10
+	var offset int64
+	articles, err := models.GetAllArticle(query, fields, sort, order, offset, limit)
+	if err != nil {
+		logs.Error(err)
+	}
+	for content, value := range articles {
+		log.Println(content)
+		log.Println(value)
+	}
+	c.Data["articles"] = &articles
+	c.TplName = "article/index.tpl"
 }
 
 // Put ...
