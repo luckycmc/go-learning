@@ -5,6 +5,7 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 	beego "github.com/beego/beego/v2/server/web"
 	"html/template"
+	"time"
 )
 
 // ArticleController operations for Article
@@ -27,6 +28,24 @@ func (c *ArticleController) URLMapping() {
 func (c *ArticleController) Create() {
 	c.Data["xsrf"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "article/create.tpl"
+}
+
+// Edit ...
+// @router /article/edit
+func (c *ArticleController) Edit() {
+	c.Data["xsrf"] = template.HTML(c.XSRFFormHTML())
+	log := logs.GetLogger()
+	id, err := c.GetInt(":id")
+	if err != nil {
+		logs.Error(err)
+	}
+	log.Println("id: ", id)
+	article, err := models.GetArticleById(int64(id))
+	if err != nil {
+		logs.Error(err)
+	}
+	c.Data["article"] = &article
+	c.TplName = "article/edit.tpl"
 }
 
 // Post ...
@@ -110,7 +129,27 @@ func (c *ArticleController) GetAll() {
 // @Failure 403 :id is not int
 // @router /:id [put]
 func (c *ArticleController) Put() {
-
+	log := logs.GetLogger()
+	id, err := c.GetInt(":id")
+	if err != nil {
+		logs.Error(err)
+	}
+	log.Println("id: ", id)
+	title := c.GetString("title")
+	content := c.GetString("content")
+	log.Println("title: ", title)
+	// update data
+	article := models.Article{
+		Id:        int64(id),
+		Title:     title,
+		Content:   content,
+		UpdatedAt: time.Now(),
+	}
+	err = models.UpdateArticleById(&article)
+	if err != nil {
+		logs.Error(err)
+	}
+	c.Ctx.Output.Body([]byte(title))
 }
 
 // Delete ...

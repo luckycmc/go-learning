@@ -16,7 +16,7 @@ type Article struct {
 	Title     string    `orm:"size(128)"`
 	Content   string    `orm:"size(128)"`
 	CreatedAt time.Time `orm:"auto_now_add;type(timestamp)"`
-	UpdatedAt time.Time `orm:"auto_now_add;type(timestamp)"`
+	UpdatedAt time.Time `orm:"type(timestamp)"`
 }
 
 func (a *Article) TableName() string {
