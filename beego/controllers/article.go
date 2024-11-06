@@ -175,5 +175,16 @@ func (c *ArticleController) Put() {
 // @Failure 403 id is empty
 // @router /:id [delete]
 func (c *ArticleController) Delete() {
-
+	id, err := c.GetInt(":id")
+	if err != nil {
+		logs.Error(err)
+	}
+	log := logs.GetLogger()
+	log.Println("id: ", id)
+	// delete
+	err = models.DeleteArticle(int64(id))
+	if err != nil {
+		logs.Error(err)
+	}
+	c.Ctx.Output.Body([]byte{})
 }
