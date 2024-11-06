@@ -152,3 +152,13 @@ func DeleteArticle(id int64) (err error) {
 	}
 	return
 }
+
+func FindArticleByTitle(title string) (v *Article, err error) {
+	o := orm.NewOrm()
+	// 获取queryseter对象
+	qs := o.QueryTable("articles")
+	if err = qs.Filter("title__iexact", title).RelatedSel().One(v); err == nil {
+		return v, nil
+	}
+	return nil, err
+}
