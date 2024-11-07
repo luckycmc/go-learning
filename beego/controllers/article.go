@@ -61,8 +61,9 @@ func (c *ArticleController) Post() {
 	c.Ctx.Output.Body([]byte(title))
 	c.Ctx.Output.Body([]byte(content))
 	article := models.Article{
-		Title:   title,
-		Content: content,
+		Title:     title,
+		Content:   content,
+		UpdatedAt: time.Now(),
 	}
 	id, err := models.AddArticle(&article)
 	if err != nil {
@@ -187,4 +188,16 @@ func (c *ArticleController) Delete() {
 		logs.Error(err)
 	}
 	c.Ctx.Output.Body([]byte{})
+}
+
+func (c *ArticleController) GetByTitle() {
+	log := logs.GetLogger()
+	title := c.GetString(":title")
+	log.Println("title: ", title)
+	article, err := models.FindArticleByTitle(title)
+	if err != nil {
+		logs.Error(err)
+	}
+	c.Data["article"] = &article
+	c.TplName = "article/show.tpl"
 }
