@@ -6,7 +6,7 @@ import (
 	service "mysql/rpcx"
 )
 
-var addr = flag.String("addr", "localhost:8972", "server address")
+var addr = flag.String("addr", "0.0.0.0:8003", "server address")
 
 func main() {
 	s := server.NewServer()
