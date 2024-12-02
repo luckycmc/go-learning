@@ -31,17 +31,16 @@ func (c *IndexController) Post() {
 }
 
 func (c *IndexController) Get() {
-	log := logs.GetLogger()
-	log.Println("aaa")
+	logger := logs.GetLogger()
+	logger.Println("aaa")
 	v := c.GetSession("name")
 	if v == nil {
 		c.SetSession("name", "kevin")
 		c.Data["name"] = "kevin"
 	} else {
 		c.SetSession("name", "kevin1")
-		c.Data["name"] = "kevin1"
+		c.Data["name"] = v
 	}
-	logs.SetLogger("aaaa")
 	c.TplName = "index/index.tpl"
 }
 

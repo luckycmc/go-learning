@@ -6,12 +6,11 @@ import (
 	"github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/server/web/session"
 	_ "github.com/beego/beego/v2/server/web/session/mysql"
-	"log"
 )
 
 var globalSessions *session.Manager
 
-func init() {
+/*func init() {
 	sessionConfig := &session.ManagerConfig{
 		CookieName:      "sessionId",
 		EnableSetCookie: true,
@@ -28,13 +27,15 @@ func init() {
 	}
 	log.Println("Session manager initialized successfully")
 	go globalSessions.GC()
-}
+}*/
 
 func main() {
 	web.ErrorController(&controllers.ErrorController{})
 	web.Run()
 	// 设置session驱动
 	// redis
+	web.BConfig.WebConfig.Session.SessionProvider = "redis"
+	web.BConfig.WebConfig.Session.SessionProviderConfig = "192.168.72.130:6379,100,redis_secret"
 	// beego.BConfig.WebConfig.Session.SessionProvider = "redis"
 	// beego.BConfig.WebConfig.Session.SessionProviderConfig = "192.168.72.130:6379"
 
