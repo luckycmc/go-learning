@@ -5,12 +5,12 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 	beego "github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/server/web/session"
-	_ "github.com/beego/beego/v2/server/web/session/redis"
+	_ "github.com/beego/beego/v2/server/web/session/mysql"
 	"log"
 	"net/http"
 )
 
-var globalSessions *session.Manager
+var globalSessions1 *session.Manager
 
 func init() {
 	sessionConfig := &session.ManagerConfig{
@@ -20,43 +20,44 @@ func init() {
 		Maxlifetime:     3600,
 		Secure:          false,
 		CookieLifeTime:  3600,
-		ProviderConfig:  "192.168.72.130:6379,100,secret_redis",
+		ProviderConfig:  "root:root@tcp(192.168.72.130:3306)/beego?charset=utf8",
 	}
 	var err error
-	globalSessions, err = session.NewManager("redis", sessionConfig)
+	globalSessions1, err = session.NewManager("mysql", sessionConfig)
 	if err != nil {
 		log.Fatalf("Failed to initialize session manager: %v", err)
 	}
 	log.Println("Session manager initialized successfully")
-	go globalSessions.GC()
+	go globalSessions1.GC()
 }
 
-// IndexController operations for Index
-type IndexController struct {
+// Mysql_sessionController operations for Mysql_session
+type Mysql_sessionController struct {
 	beego.Controller
 }
 
 // URLMapping ...
-func (c *IndexController) URLMapping() {
+func (c *Mysql_sessionController) URLMapping() {
 	c.Mapping("Post", c.Post)
 	c.Mapping("GetOne", c.GetOne)
 	c.Mapping("GetAll", c.GetAll)
 	c.Mapping("Put", c.Put)
+	c.Mapping("Get", c.Get)
 	c.Mapping("Delete", c.Delete)
 }
 
 // Post ...
 // @Title Create
-// @Description create Index
-// @Param	body		body 	models.Index	true		"body for Index content"
-// @Success 201 {object} models.Index
+// @Description create Mysql_session
+// @Param	body		body 	models.Mysql_session	true		"body for Mysql_session content"
+// @Success 201 {object} models.Mysql_session
 // @Failure 403 body is empty
 // @router / [post]
-func (c *IndexController) Post() {
+func (c *Mysql_sessionController) Post() {
 
 }
 
-func (c *IndexController) Get() {
+func (c *Mysql_sessionController) Get() {
 	logger := logs.GetLogger()
 	ctx := context.Background()
 	r, _ := http.NewRequest("GET", "/", nil)
@@ -66,7 +67,7 @@ func (c *IndexController) Get() {
 		logger.Println("abc")
 	}
 	defer sess.SessionRelease(ctx, w)
-	sess.Set(ctx, "name", "kevin113")
+	sess.Set(ctx, "name", "kevin112")
 
 	if err != nil {
 		logger.Println("abcd")
@@ -88,59 +89,52 @@ func (c *IndexController) Get() {
 	c.TplName = "index/index.tpl"
 }
 
-func (c *IndexController) Index() {
-	// c.Abort("401")
-	c.Redirect("/", 302)
-}
-
 // GetOne ...
 // @Title GetOne
-// @Description get Index by id
+// @Description get Mysql_session by id
 // @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Index
+// @Success 200 {object} models.Mysql_session
 // @Failure 403 :id is empty
 // @router /:id [get]
-func (c *IndexController) GetOne() {
-	name := c.Ctx.Input.Param(":name")
-	c.Data["name"] = name
-	c.TplName = "index/index.tpl"
+func (c *Mysql_sessionController) GetOne() {
+
 }
 
 // GetAll ...
 // @Title GetAll
-// @Description get Index
+// @Description get Mysql_session
 // @Param	query	query	string	false	"Filter. e.g. col1:v1,col2:v2 ..."
 // @Param	fields	query	string	false	"Fields returned. e.g. col1,col2 ..."
 // @Param	sortby	query	string	false	"Sorted-by fields. e.g. col1,col2 ..."
 // @Param	order	query	string	false	"Order corresponding to each sortby field, if single value, apply to all sortby fields. e.g. desc,asc ..."
 // @Param	limit	query	string	false	"Limit the size of result set. Must be an integer"
 // @Param	offset	query	string	false	"Start position of result set. Must be an integer"
-// @Success 200 {object} models.Index
+// @Success 200 {object} models.Mysql_session
 // @Failure 403
 // @router / [get]
-func (c *IndexController) GetAll() {
+func (c *Mysql_sessionController) GetAll() {
 
 }
 
 // Put ...
 // @Title Put
-// @Description update the Index
+// @Description update the Mysql_session
 // @Param	id		path 	string	true		"The id you want to update"
-// @Param	body		body 	models.Index	true		"body for Index content"
-// @Success 200 {object} models.Index
+// @Param	body		body 	models.Mysql_session	true		"body for Mysql_session content"
+// @Success 200 {object} models.Mysql_session
 // @Failure 403 :id is not int
 // @router /:id [put]
-func (c *IndexController) Put() {
+func (c *Mysql_sessionController) Put() {
 
 }
 
 // Delete ...
 // @Title Delete
-// @Description delete the Index
+// @Description delete the Mysql_session
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
 // @router /:id [delete]
-func (c *IndexController) Delete() {
+func (c *Mysql_sessionController) Delete() {
 
 }

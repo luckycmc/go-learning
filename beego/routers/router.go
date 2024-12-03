@@ -22,6 +22,8 @@ func init() {
 	beego.Router("/index", &controllers.IndexController{}, "get:Get")
 	beego.Router("/redirect", &controllers.IndexController{}, "get:Index")
 
+	beego.Router("/mysql_session", &controllers.Mysql_sessionController{}, "get:Get")
+
 	// namespace
 	ns := beego.NewNamespace("/v1",
 		beego.NSRouter("/test", &controllers.ArticleController{}, "get:GetOne"),
