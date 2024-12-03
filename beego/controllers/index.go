@@ -1,9 +1,34 @@
 package controllers
 
 import (
+	"context"
 	"github.com/beego/beego/v2/core/logs"
 	beego "github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego/v2/server/web/session"
+	"log"
+	"net/http"
 )
+
+var globalSessions *session.Manager
+
+func init() {
+	sessionConfig := &session.ManagerConfig{
+		CookieName:      "sessionId",
+		EnableSetCookie: true,
+		Gclifetime:      3600,
+		Maxlifetime:     3600,
+		Secure:          false,
+		CookieLifeTime:  3600,
+		ProviderConfig:  "192.168.72.130:6379,100,secret_redis",
+	}
+	var err error
+	globalSessions, err = session.NewManager("redis", sessionConfig)
+	if err != nil {
+		log.Fatalf("Failed to initialize session manager: %v", err)
+	}
+	log.Println("Session manager initialized successfully")
+	go globalSessions.GC()
+}
 
 // IndexController operations for Index
 type IndexController struct {
@@ -32,15 +57,33 @@ func (c *IndexController) Post() {
 
 func (c *IndexController) Get() {
 	logger := logs.GetLogger()
-	logger.Println("aaa")
-	v := c.GetSession("name")
+	ctx := context.Background()
+	r, _ := http.NewRequest("GET", "/", nil)
+	w := http.ResponseWriter(c.Ctx.ResponseWriter)
+	sess, err := globalSessions.SessionStart(w, r)
+	if err != nil {
+		logger.Println("abc")
+	}
+	defer sess.SessionRelease(ctx, w)
+	sess.Set(ctx, "name", "kevin112")
+
+	if err != nil {
+		logger.Println("abcd")
+	}
+
+	c.Data["name"] = sess.Get(ctx, "name")
+	if c.Data["name"] == nil {
+		logger.Println("abcde")
+	}
+
+	/*v := c.GetSession("name")
 	if v == nil {
 		c.SetSession("name", "kevin")
 		c.Data["name"] = "kevin"
 	} else {
 		c.SetSession("name", "kevin1")
 		c.Data["name"] = v
-	}
+	}*/
 	c.TplName = "index/index.tpl"
 }
 
