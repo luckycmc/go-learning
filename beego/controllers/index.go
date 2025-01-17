@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"context"
-	"github.com/beego/beego/v2/core/logs"
+	"github.com/astaxie/beego/logs"
 	beego "github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/server/web/session"
 	_ "github.com/beego/beego/v2/server/web/session/redis"
@@ -29,6 +29,7 @@ func init() {
 	}
 	log.Println("Session manager initialized successfully")
 	go globalSessions.GC()
+	logs.SetLogger(logs.AdapterConsole, `{"level":1,"color":true}`)
 }
 
 // IndexController operations for Index
@@ -61,6 +62,7 @@ func (c *IndexController) Get() {
 	ctx := context.Background()
 	r, _ := http.NewRequest("GET", "/", nil)
 	w := http.ResponseWriter(c.Ctx.ResponseWriter)
+	logs.GetLogger("ORM").Println("hello")
 	sess, err := globalSessions.SessionStart(w, r)
 	if err != nil {
 		logger.Println("abc")
